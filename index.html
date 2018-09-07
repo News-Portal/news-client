@@ -44,7 +44,7 @@
         }
   
         .row-body div:last-child {
-          border-right: none; }
+          border-right: none; 
         }
   
         input.search {
@@ -60,91 +60,156 @@
             <div class="container">
               <a class="navbar-brand" href="#">Tv Shows Information</a>
               <div class="navbar-right">
-                <img src="https://via.placeholder.com/50x50" />
-                <p><a href="http://www.tvmaze.com/">TV Maze</a></p>
+                <div class="navbar-brand">
+                        Powered by:
+                </div>       
+                <p><a href="http://www.tvmaze.com/" target="_blank">
+                    <img src="http://static.tvmaze.com/images/tvm-header-logo.png" width="150" height="50" />
+                </a></p>
               </div>
             </div>
           </nav>
         </div>
     </div>    
-    <div class="row row-body ">
-            <div class="col-md-3 box">
-              <h4>List Search</h4>
-              <ul style="list-style-type:none">
-                <li>List 1</li>
-                <li>List 2</li>
-                <li>List 3</li>
-              </ul>
-            </div>
-    <div class="col-md-3 box">
-            <input class="search" type="text" placeholder="Search..."></input>
-            <div class="list">
-              <!--  
-              <div class="card-body">
-                <h5 class="card-title">
-                  <a href="#">Repo Name 1</a>
-                </h5>
-                <p class="card-text">description of repo 1 : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                <p class="card-text">10 stars</p>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">
-                  <a href="#">Repo Name 2</a>
-                </h5>
-                <p class="card-text">description of repo 2 : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                <p class="card-text">2 stars</p>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">
-                  <a href="#">Repo Name 3</a>
-                </h5>
-                <p class="card-text">description of repo 3 : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                <p class="card-text">3 stars</p>
-              </div>
-            </div>
-        -->
-          </div>
+        <div class="container">
+            <div class="row row-body ">
+                
+                <div class="col-md-3 box">
+                    <input class="search" type="text" placeholder="type and press enter">
+                    <div class="list">
+                    </div>  
+                </div>
+                <div class="col-md-6 box">
+                    <div class = "details">
+
+                    </div>
+                </div>
+        </div>
+    </div>
 
     <script>
+        // get list of all episodes
         $.ajax({
             method : 'GET',
             url : 'http://localhost:3000/movies'
         })
         .done(function(result){
             let data = result['data']
-            console.log(data)
+            // console.log(data)
             $('.list').empty();
 
             data.forEach(show => {
-                let obj = {} // for console.log() purposes only
-                obj['name'] = show['name'];
-                obj['season'] = show['season'];
-                obj['summary'] = show['summary'];
-                obj['url'] = show['url'];
+                // let obj = {} // for console.log() purposes only
+                // obj['name'] = show['name'];
+                // obj['season'] = show['season'];
+                // obj['summary'] = show['summary'];
+                // obj['url'] = show['url'];
                 // console.log(obj)
                 $('.list').append(`
                 <div class="card-body">
                     <h5 class="card-title">
                         Last Episode : 
-                        <a href="${show['url']}" target="_blank">${show['name']}</a>
+                        <label color="blue">${show['name']}</label>
+                        <br/>
+                        <br/>
+                        <p><font onclick="getDetails('${show['name']}')" color="blue">Details</font></p>
                     </h5>
-                    <h6 class = "card-title">
-                        Series : 
-                        <a href="${show['show']['url']}" target="_blank">${show['show']['name']}</a>
-                        <image src = "${show['show']['image']['medium']}"></image>
-                    </h6>
-                    Number of seasons : ${show['season']}
-                    <br/>
-                    Status : ${show['show']['status']}
-                    <p class="card-text">Summary : ${show['show']['summary']}</p>
                     
                 </div>
                 `)
             });
         })
         .fail(function(error){
-            console.log(error)
+            $('.list').empty();
+            $('.list').append(
+                    `<div>Err : ${error}</div>`
+            )
         })
+
+        //get details 
+        function getDetails(input){
+            let details = input
+
+            $.ajax({
+                  method : 'POST',
+                  url : 'http://localhost:3000/movies/details',
+                  data : {
+                    name : details
+                  }
+            })
+            .done(function(result){
+                let data = result['data'];
+                // console.log(data)
+                $('.details').empty();
+                $('.details').append(`
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Last Episode : 
+                            <a href="${data[0]['url']}" target="_blank">${data[0]['name']}</a>
+                            <br/>
+                            <br/>
+                        </h5>
+                        <h6 class = "card-title">
+                            Series :
+                            <br/> 
+                            <a href="${data[0]['show']['url']}" target="_blank">${data[0]['show']['name']}</a>
+                            <br/>
+                            <image src = "${data[0]['show']['image']['medium']}"></image>
+                        </h6>
+                        Number of seasons : ${data[0]['season']}
+                        <br/>
+                        Status : ${data[0]['show']['status']}
+                        <p class="card-text">Summary : ${data[0]['show']['summary']}</p>
+                        
+                    </div>
+                `)
+
+            })
+            .fail(function(error){
+                $('.details').empty();
+                $('.details').append(`<div>Error : ${error}</div>`)
+            })
+        }
+
+        // search episodes by name
+        $('.search').keypress(function(){
+            let search = $('.search').val();
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/movies/search',
+                data :{
+                    name : search
+                }
+            })
+            .done(function(result){
+                let data = result['data']
+                // console.log(data)
+                $('.list').empty();
+                data.forEach(show => {
+                    // console.log(show)
+                    $('.list').append(`
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Last Episode : 
+                            <label color="blue">${show['name']}</label>
+                            <br/>
+                            <br/>
+                            <p><font onclick="getDetails('${show['name']}')" color="blue">Details</font></p>
+                        </h5>
+                        
+                    </div>
+                    `)
+                }); 
+            })
+            .fail(function(error){
+                // $('.list').empty();
+                // $('.list').append(
+                //     `<div>Error : ${error}</div>`
+                // )
+                console.log(error)
+            })
+        })
+
     </script>
 
 </body>
