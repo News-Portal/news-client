@@ -299,9 +299,9 @@
     <script>
 
         let token = localStorage.getItem("token")
-        if(token){
-            window.location.replace("http://localhost:8080/news-client/home.html")
-        }
+        // if(token){
+        //     window.location.replace("http://localhost:8080/news-client/home.html")
+        // }
 
 
         window.fbAsyncInit = function () {
@@ -330,7 +330,7 @@
                             // console.log(result);
                             alert("Login success")
                             localStorage.setItem('token', result.data.token)
-                            window.location.replace("http://localhost:8080/news-client/home.html")
+                            window.location.replace("http://localhost:8080/home.html")
                         })
                         .catch((err) => {
                             console.log(err);
@@ -352,7 +352,7 @@
                 .done(function ({token}) {
                     alert("Login success")
                     localStorage.setItem("token", token)
-                    window.location.replace("http://localhost:8080/news-client/home.html")
+                    window.location.replace("http://localhost:8080/home.html")
                 })
                 .fail(function (err) {
                     alert("Login failed")
