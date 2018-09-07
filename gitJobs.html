@@ -7,20 +7,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="css/gitJobsStyle.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 </head>
 <style>
     .bg img {
-    width: 295px;
-    height: 180px;
-}
+        width: 295px;
+        height: 180px;
+    }
 </style>
 
 <body>
-
     <div class="full-width">
-        
+        <a href="http://localhost:8080/home.html">Home</a>
         <div class='cf'>
             <div class="Switch card">
                 <div class="Toggle"></div>
@@ -51,10 +49,14 @@
         <script src='http://imagesloaded.desandro.com/imagesloaded.pkgd.min.js'></script>
         <script src="js/gitJobs.js"></script>
         <script>
+            let token = localStorage.getItem("token")
+            if (!token) {
+                window.location.replace("http://localhost:8080/index.html")
+            }
             $.ajax({
-                    method: 'GET',
-                    url: 'http://localhost:3000/jobsgit'
-                })
+                method: 'GET',
+                url: 'http://localhost:3000/jobsgit'
+            })
                 .done(function (jobs) {
                     showAllJobs(jobs)
                 })
@@ -108,35 +110,35 @@
                 }
             }
 
-            function sortBy(param){
+            function sortBy(param) {
                 $.ajax({
                     method: 'POST',
                     url: 'http://localhost:3000/jobsgit',
-                    data:{
+                    data: {
                         language: param
                     }
                 })
-                .done(function (jobs) {
-                    $('.col-md-3').text('')
-                    showAllJobs(jobs)
-                })
-                .fail(function (err) {
-                    alert(JSON.stringify(err))
-                })
+                    .done(function (jobs) {
+                        $('.col-md-3').text('')
+                        showAllJobs(jobs)
+                    })
+                    .fail(function (err) {
+                        alert(JSON.stringify(err))
+                    })
             }
 
-            function showAll(){
+            function showAll() {
                 $.ajax({
                     method: 'GET',
                     url: 'http://localhost:3000/jobsgit'
                 })
-                .done(function (jobs) {
-                    $('.col-md-3').text('')
-                    showAllJobs(jobs)
-                })
-                .fail(function (err) {
-                    alert(JSON.stringify(err))
-                })
+                    .done(function (jobs) {
+                        $('.col-md-3').text('')
+                        showAllJobs(jobs)
+                    })
+                    .fail(function (err) {
+                        alert(JSON.stringify(err))
+                    })
             }
         </script>
 
