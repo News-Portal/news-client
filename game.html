@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game</title>
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous">
+    </script>
+</head>
+
+<style>
+    .bg img {
+      width: 295px;
+      height: 180px;
+    }
+</style>
+
+<body>
+  <div class="cf">
+    <div class="form-row align-items-center">
+        <div class="col-auto my-2">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Platform</label>
+            <select name="platform" class="custom-select mr-sm-2" id="inlineFormCustomSelect" onchange="getGame(this.value)">
+                <option value="all" selected>All</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="full-width">
+
+    <div class="col-md-3">
+
+
+    </div>
+    
+  </div>
+  
+  <script>
+    $.ajax({
+      method: 'GET',
+      url: 'http://localhost:3000/game'
+    })
+    .done(games => {
+        showAllGame(games)
+    })
+    .fail(err => {
+        alert(JSON.stringify(err))
+    })
+    
+    function showAllGame(games) {
+      games.forEach(game => {
+        const imgUrl = game.cover ? game.cover.url : ''
+        const description = game.summary ? game.summary : 'No description provide'
+        const rating = game.rating ? game.rating.toFixed(1) : 'N/A'
+        const created = new Date(game.created_at)
+        
+        $('.col-md-3').append(`
+          <div class="card-view">
+              <div class='bg'>
+                  <img src="${checkLogo(imgUrl)}" alt="company image">
+              </div>
+              <div class="container">
+                  <a href='${game.url}'><div class="tag_name red">${game.name}</div></a>
+                  <i class="fas fa-star">${rating}</i>
+                  <div class="company">
+                      <div class="c_content ">
+                        <div class="description">
+                          ${description}
+                        </div>
+                      </div>
+                  </div> <!-- end .company -->
+                  <div class="user">
+                      <div class="user_info">
+                          <a href="${game.url}" class="user_name orange">${game.slug}</a> • ${created.getDate()}-${created.getMonth()}-${created.getFullYear()}
+                      </div>
+                  </div> <!-- end .user -->
+              </div> <!-- end .container -->
+          </div> <!-- end card --> 
+        `)
+      })
+    }
+    
+    function checkLogo(url) {
+      if (url) {
+          return url
+      } else {
+          return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYTYIh6CZQlgeK9T3YSBHOM6lSscaUXqBVI-ec2gamOsaxgsu7ow'
+      }
+    }
+    
+
+    $.ajax({
+      method: 'GET',
+      url: 'http://localhost:3000/game/platforms'
+    })
+    .done(platforms => {
+        platforms.forEach(platform => {
+          $("#inlineFormCustomSelect").append(`
+            <option value="${platform.id}">${platform.name}</option>
+          `)
+        })
+    })
+    .fail(err => {
+        alert(JSON.stringify(err))
+    })
+    
+    function getAll() {
+      $.ajax({
+        method: 'GET',
+        url: 'http://localhost:3000/game'
+      })
+      .done(games => {
+          showAllGame(games)
+      })
+      .fail(err => {
+          alert(JSON.stringify(err))
+      })
+    }
+    
+    function getGame(val) {
+      if (val === 'all') {
+        $('.col-md-3').text("")
+        getAll()
+      } else {
+        getPlatformGame(val)
+      }
+    }
+    
+    function getPlatformGame(id) {
+      $.ajax({
+        method: 'GET',
+        url: `http://localhost:3000/game/platform/${id}`
+      })
+      .done(games => {
+        $(".col-md-3").text("")
+        showAllGame(games)
+      })
+      .fail(err => {
+        alert(JSON.stringify(err))
+      })
+    }
+  </script>
+  
+</body>
+
+</html>
