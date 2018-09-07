@@ -59,7 +59,7 @@ a {
 }
 
 /* ---- Switch button ---- */
-/*.icon-switch {
+/* .icon-switch {
 	width: 100%;
 }
 
@@ -79,7 +79,7 @@ a {
 
 .active {
 	color: #0990aa;
-}*/
+} */
 .Switch {
 	position: relative;
 	float: right;
@@ -140,6 +140,8 @@ a {
 	float: left;
 	width: 292px;
 	margin: 5px;
+	height: 500px;
+	padding-top: 50px;
 }
 
 .container {

@@ -64,6 +64,7 @@
 
             function showAllJobs(data) {
                 let jobs = data.jobs
+                console.log(jobs)
                 for (let i = 0; i < jobs.length; i++) {
                     $('.col-md-3').append(`
                         <div class="card-view">
@@ -95,8 +96,6 @@
                         </div> <!-- end card -->    
                     `)
                 }
-
-                alert(`masuk`)
             }
 
             function checkLogo(url) {
