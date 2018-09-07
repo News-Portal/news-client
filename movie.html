@@ -16,6 +16,10 @@
           padding-top: 65px;
         }
   
+        a {
+            color : red;
+        }
+
         .navbar-right p {
           float: right;
           line-height: 50px;
@@ -36,11 +40,11 @@
         }
   
         .row-body {
-          height: 100vw;
+          height: 43vw;
         }
   
         .row-body .box {
-          border-right: 1px solid #eee;
+          border-right: 0px solid #eee;
         }
   
         .row-body div:last-child {
@@ -50,11 +54,53 @@
         input.search {
           margin-bottom: 10px;
         }
+
+        .divScroll {
+            height: 450px;
+            overflow-y:scroll;
+            overflow-x:hidden;
+        }
+
+        .divScrollDetails {
+            height: 500px;
+            overflow-y:scroll;
+            overflow-x:hidden;
+        }
+
+        .backgroundAqua {
+            background-image: url(./assets/blackTurquoise.jpg);
+            color: white;
+        }
+
+        .fixedBG {
+            /* background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(254,255,255,1) 2%, rgba(209,236,240,1) 100%); */
+            background-image: url(./assets/blackTurquoise.jpg);
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            }
+
+         .list {
+             background: rgb(155, 223, 181);
+             border-radius: 10px;
+             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+         }   
+
+         .details {
+             background: rgb(155, 223, 181);
+             border-radius: 10px;
+             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+         }
+
+         .headerNavbar {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+         }
   
       </style>
 </head>
-<body>
-    <div class="container">
+<body class = "fixedBG">
+    <div class="container headerNavbar">
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
@@ -72,15 +118,15 @@
         </div>
     </div>    
         <div class="container">
-            <div class="row row-body ">
+            <div class="row row-body">
                 
                 <div class="col-md-3 box">
                     <input class="search" type="text" placeholder="type and press enter">
-                    <div class="list">
+                    <div class="list divScroll">
                     </div>  
                 </div>
-                <div class="col-md-6 box">
-                    <div class = "details">
+                <div class="col-md-15 box">
+                    <div class = "details divScrollDetails">
 
                     </div>
                 </div>
@@ -150,16 +196,16 @@
                             <br/>
                         </h5>
                         <h6 class = "card-title">
-                            Series :
-                            <br/> 
+                            Series : 
                             <a href="${data[0]['show']['url']}" target="_blank">${data[0]['show']['name']}</a>
+                            <br/>
                             <br/>
                             <image src = "${data[0]['show']['image']['medium']}"></image>
                         </h6>
-                        Number of seasons : ${data[0]['season']}
+                        <b>Number of seasons :</b> ${data[0]['season']}
                         <br/>
-                        Status : ${data[0]['show']['status']}
-                        <p class="card-text">Summary : ${data[0]['show']['summary']}</p>
+                        <b>Status :</b> ${data[0]['show']['status']}
+                        <p class="card-text"><b>Summary :</b> ${data[0]['show']['summary']}</p>
                         
                     </div>
                 `)
@@ -202,11 +248,11 @@
                 }); 
             })
             .fail(function(error){
-                // $('.list').empty();
-                // $('.list').append(
-                //     `<div>Error : ${error}</div>`
-                // )
-                console.log(error)
+                $('.list').empty();
+                $('.list').append(
+                    `<div>Error : ${error}</div>`
+                )
+                // console.log(error)
             })
         })
 
