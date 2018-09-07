@@ -140,7 +140,7 @@ a {
 	float: left;
 	width: 292px;
 	margin: 5px;
-	height: 500px;
+	height: 600px;
 	padding-top: 50px;
 }
 
@@ -326,6 +326,12 @@ a {
 	letter-spacing: 0.05em;
 	margin-bottom: 10px;
 	text-transform: uppercase;
+}
+
+.description {
+	height: 140px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* COMPANY INFO ------------------------ */
