@@ -330,7 +330,7 @@ a {
 
 .description {
 	height: 140px;
-	overflow: hidden;
+	overflow: scroll;
 	text-overflow: ellipsis;
 }
 
